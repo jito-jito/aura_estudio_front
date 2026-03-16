@@ -1,7 +1,13 @@
 import { Logo } from './Logo';
 import { Link, useNavigate, useLocation } from 'react-router';
 
-export function Header() {
+interface HeaderProps {
+  name?: string;
+}
+
+export function Header({ name }: HeaderProps) {
+  const appName = name || "Aura estudio";
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,7 +29,7 @@ export function Header() {
           <Link to="/" className="flex items-center gap-3">
             <Logo isDark={true} />
             <h1 className="text-xl md:text-2xl" style={{ fontFamily: 'Playfair Display, serif', color: '#2C2C2C' }}>
-              Aura estudio
+              {name}
             </h1>
           </Link>
           

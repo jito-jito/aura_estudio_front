@@ -1,21 +1,38 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useOutletContext } from 'react-router';
 import { Hero } from '../components/Hero';
 import { ProductCard } from '../components/ProductCard';
 import { TrustBar } from '../components/TrustBar';
 import { HeroSkeleton, ProductGridSkeleton } from '../components/SkeletonLoader';
 import { allProducts, handleMercadoLibreClick, handleWhatsAppClick } from '../data/products';
 import { ArrowRight } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 export function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
+  // 1. Recibimos el context del Root
+  const { cmsData } = useOutletContext<{ cmsData: any }>();
+
+  // 2. Manejo de loading basado en si existe data
+  // const isLoading = !cmsData;
+
+
+  // Mapeo de datos del CMS (Strapi)
+  // Nota: hero_contenido parece venir en formato de bloques o markdown según tu JSON
+  const heroTitle = cmsData?.hero_contenido?.split('\n')[0].replace('## ', '') || "Transformá tus espacios con arte único";
+  const heroSubtitle = cmsData?.hero_contenido?.split('\n')[1] || "Cuadros y decoración para el hogar que reflejan tu estilo";
+
+  const heroRawContent = cmsData?.hero_contenido || "## Cargando...";
+  const heroImage = cmsData?.hero_imagen?.url || "https://images.unsplash.com/..."; // URL por defecto
+  const heroBtnText = cmsData?.hero_texto_boton || "Ver Colección";
+
   useEffect(() => {
     // Simular carga de datos desde CMS
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -34,10 +51,11 @@ export function Home() {
         <HeroSkeleton />
       ) : (
         <Hero
-          image="https://images.unsplash.com/photo-1764010533326-c6916f3d6252?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBsaXZpbmclMjByb29tJTIwZnJhbWVkJTIwd2FsbCUyMGFydHxlbnwxfHx8fDE3NzMwMTgyMDF8MA&ixlib=rb-4.1.0&q=80&w=1080"
-          title="Transformá tus espacios con arte único"
-          subtitle="Cuadros y decoración para el hogar que reflejan tu estilo"
-          ctaText="Ver Colección"
+          image={heroImage}
+          title={heroTitle}
+          subtitle={heroSubtitle}
+          content={heroRawContent}
+          ctaText={heroBtnText}
           onCtaClick={() => scrollToSection('catalog')}
         />
       )}

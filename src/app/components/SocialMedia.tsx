@@ -2,10 +2,15 @@ import { Instagram, Facebook, Mail } from "lucide-react";
 
 interface SocialMediaProps {
   id?: string;
+  socialItems?: {
+    name: string;
+    icon: React.ComponentType<{ size: number; className?: string }>;
+    href: string | false;
+    color: string;
+  }[];
 }
 
-export function SocialMedia({ id }: SocialMediaProps = {}) {
-  const socialLinks = [
+const defaultSocialItems = [
     {
       name: "Instagram",
       icon: Instagram,
@@ -42,6 +47,9 @@ export function SocialMedia({ id }: SocialMediaProps = {}) {
     },
   ];
 
+export function SocialMedia({ id, socialItems }: SocialMediaProps = {}) {
+  const socialLinks = socialItems || defaultSocialItems;
+
   return (
     <section id={id} className="py-20 bg-[#F8F6F3]">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
@@ -65,10 +73,10 @@ export function SocialMedia({ id }: SocialMediaProps = {}) {
         </p>
 
         <div className="flex items-center justify-center gap-6">
-          {socialLinks.map((link, index) => (
+          {socialLinks.filter(link => link.href).map((link, index) => (
             <a
               key={index}
-              href={link.href}
+              href={link.href as string}
               target="_blank"
               rel="noopener noreferrer"
               className="group flex flex-col items-center gap-3 transition-all duration-300 hover:scale-110"
