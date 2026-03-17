@@ -33,8 +33,8 @@ export function Hero({ image, title, subtitle, ctaText, onCtaClick, content }: H
           <ReactMarkdown
             components={{
               // Mapeamos los tags de Markdown a tus clases de Figma
-              h1: ({ node, ...props }) => <h1 className="text-6xl lg:text-7xl mb-6 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }} {...props} />,
-              h2: ({ node, ...props }) => <h2 className="text-5xl mb-4" style={{ fontFamily: 'Playfair Display, serif' }} {...props} />,
+              h1: ({ node, ...props }) => <h1 className="hero-title text-6xl lg:text-7xl mb-6 leading-tight" style={{ fontFamily: 'Playfair Display, serif' }} {...props} />,
+              h2: ({ node, ...props }) => <h2 className="hero-title text-5xl mb-4" style={{ fontFamily: 'Playfair Display, serif' }} {...props} />,
               p: ({ node, ...props }) => <p className="text-xl lg:text-2xl mb-10 text-white/90" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300 }} {...props} />
             }}
           >

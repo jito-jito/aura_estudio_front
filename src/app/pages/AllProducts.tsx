@@ -52,7 +52,7 @@ export function AllProducts() {
             Todos los Productos
           </h1>
           <p className="text-lg text-neutral-600" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300 }}>
-            Descubrí toda nuestra colección de arte y decoración
+            Descubre toda nuestra colección de arte y decoración
           </p>
         </div>
 
