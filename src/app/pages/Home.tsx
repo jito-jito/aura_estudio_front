@@ -90,8 +90,8 @@ export function Home() {
                   image={product.image}
                   title={product.title}
                   price={product.price}
-                  onMercadoLibreClick={() => handleMercadoLibreClick(product.id)}
-                  onWhatsAppClick={() => handleWhatsAppClick(product.id)}
+                  onMercadoLibreClick={() => handleMercadoLibreClick(product.id, product.url_producto_en_tienda)}
+                  onWhatsAppClick={() => handleWhatsAppClick(product.id, cmsData.whatsapp)}
                   soldOut={product.soldOut}
                 />
               ))}
@@ -102,7 +102,7 @@ export function Home() {
               <button
                 onClick={() => navigate('/productos')}
                 className="inline-flex items-center gap-3 px-8 py-4 text-white transition-all duration-300 hover:opacity-90 group"
-                style={{ 
+                style={{
                   backgroundColor: '#2D5F4C',
                   fontFamily: 'Inter, sans-serif',
                   fontWeight: 500,

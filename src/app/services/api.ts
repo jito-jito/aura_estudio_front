@@ -1,6 +1,12 @@
 /// <reference types="vite/client" />
 import { Product, ProductCategory } from '../data/products';
 
+export interface Category {
+  id: string; // documentId
+  slug: string;
+  label: string; // nombre
+}
+
 const API_URL = import.meta.env.VITE_API_URL;
 const API_TOKEN = import.meta.env.VITE_API_TOKEN;
 
@@ -18,6 +24,7 @@ interface StrapiProduct {
   imagenes: Array<{
     url: string;
   }>;
+  url_producto_en_tienda?: string;
 }
 
 export async function fetchProducts(): Promise<Product[]> {
@@ -48,6 +55,7 @@ export async function fetchProducts(): Promise<Product[]> {
         image: item.imagenes && item.imagenes.length > 0 ? item.imagenes[0].url : '',
         category: (item.categoria?.slug || 'cuadros') as ProductCategory,
         soldOut: item.agotado === true || item.stock === 0,
+        url_producto_en_tienda: item.url_producto_en_tienda,
       };
     });
   } catch (error) {
@@ -55,3 +63,39 @@ export async function fetchProducts(): Promise<Product[]> {
     return [];
   }
 }
+
+interface StrapiCategory {
+  id: number;
+  documentId: string;
+  slug: string;
+  nombre: string;
+}
+
+export async function fetchCategories(): Promise<Category[]> {
+  try {
+    const response = await fetch(`${API_URL}/categories?populate=*`, {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error fetching categories: ${response.statusText}`);
+    }
+
+    const json = await response.json();
+    const data: StrapiCategory[] = json.data;
+
+    if (!data) return [];
+
+    return data.map((item) => ({
+      id: item.documentId,
+      slug: item.slug,
+      label: item.nombre,
+    }));
+  } catch (error) {
+    console.error('Failed to fetch categories:', error);
+    return [];
+  }
+}
+

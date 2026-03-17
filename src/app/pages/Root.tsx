@@ -36,7 +36,7 @@ export function Root() {
   const empresaIg = cmsData?.instagram || "@auraestudio";
 
   const socialItems = [
-     {
+    {
       name: "Instagram",
       icon: Instagram,
       href: `${empresaIg}` || false,
@@ -74,12 +74,12 @@ export function Root() {
 
   return (
     <div className="min-h-screen bg-white" style={{ fontFamily: 'Inter, sans-serif' }}>
-      <Header name={cmsData?.nombre_empresa}/>
+      <Header name={cmsData?.nombre_empresa} />
 
       {/* Spacer for fixed header */}
-      <div className="h-20"></div>
+      <div className="header-spacer"></div>
 
-      <Outlet context={{ cmsData }}/>
+      <Outlet context={{ cmsData }} />
 
       {/* Social Media */}
       <SocialMedia id="social" socialItems={socialItems} />
@@ -108,6 +108,9 @@ export function Root() {
                 <li><button className="hover:text-white transition-colors">Preguntas frecuentes</button></li>
               </ul>
             </div> */}
+            <div>
+
+            </div>
 
             <div>
               <h4 className="text-lg mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>

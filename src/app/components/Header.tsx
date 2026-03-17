@@ -32,23 +32,23 @@ export function Header({ name }: HeaderProps) {
               {name}
             </h1>
           </Link>
-          
+
           <nav className="flex gap-4 md:gap-8" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500, fontSize: '14px' }}>
-            <Link 
+            <Link
               to="/productos"
-              className="transition-colors hover:text-[#2D5F4C]"
+              className="app-link transition-colors hover:text-[#2D5F4C]"
               style={{ color: '#2C2C2C' }}
             >
               Productos
             </Link>
-            <button 
+            <button
               onClick={() => scrollToSection('social')}
               className="transition-colors hover:text-[#2D5F4C]"
               style={{ color: '#2C2C2C' }}
             >
               Redes
             </button>
-            <button 
+            <button
               onClick={() => scrollToSection('footer')}
               className="transition-colors hover:text-[#2D5F4C]"
               style={{ color: '#2C2C2C' }}

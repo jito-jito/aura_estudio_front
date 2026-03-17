@@ -7,6 +7,7 @@ export interface Product {
   price: string;
   soldOut?: boolean;
   category: ProductCategory;
+  url_producto_en_tienda?: string;
 }
 
 export const allProducts: Product[] = [
@@ -118,12 +119,20 @@ export const allProducts: Product[] = [
   }
 ];
 
-export const handleMercadoLibreClick = (productId: string) => {
-  console.log('Mercado Libre click for product:', productId);
-  // In a real app, this would navigate to the Mercado Libre product page
+export const handleMercadoLibreClick = (productId: string, url_producto_en_tienda?: string) => {
+  console.log('Mercado Libre click for product:', productId, url_producto_en_tienda);
+
+  if (url_producto_en_tienda) {
+    window.open(url_producto_en_tienda, '_blank');
+  } else {
+    // Fallback if no URL
+    console.log('No URL provided for Mercado Libre');
+  }
 };
 
-export const handleWhatsAppClick = (productId: string) => {
-  console.log('WhatsApp click for product:', productId);
+export const handleWhatsAppClick = (productId: string, phoneNumber: string) => {
+  console.log('WhatsApp click for product:', productId, phoneNumber);
   // In a real app, this would open WhatsApp with a pre-filled message
+  // open whatsapp link
+  window.open(`https://wa.me/${phoneNumber}?text=Hola,%20estoy%20interesado%20en%20el%20producto:%20${productId}`, '_blank');
 };

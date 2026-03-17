@@ -1,38 +1,44 @@
 import { useState, useEffect } from 'react';
+import { useOutletContext } from 'react-router';
 import { ProductCard } from '../components/ProductCard';
 import { ProductGridSkeleton } from '../components/SkeletonLoader';
-import { handleMercadoLibreClick, handleWhatsAppClick, ProductCategory, Product } from '../data/products';
-import { fetchProducts } from '../services/api';
+import { handleMercadoLibreClick, handleWhatsAppClick, Product } from '../data/products';
+import { fetchProducts, fetchCategories, Category } from '../services/api';
 
 export function AllProducts() {
+  const { cmsData } = useOutletContext<{ cmsData: any }>();
   const [isLoading, setIsLoading] = useState(true);
   const [products, setProducts] = useState<Product[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'all'>('all');
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
+  console.log('cms data', cmsData)
   useEffect(() => {
-    async function loadProducts() {
+    async function loadData() {
       try {
-        const fetchedProducts = await fetchProducts();
+        const [fetchedProducts, fetchedCategories] = await Promise.all([
+          fetchProducts(),
+          fetchCategories()
+        ]);
         setProducts(fetchedProducts);
+        setCategories(fetchedCategories);
       } catch (error) {
-        console.error('Error loading products for AllProducts:', error);
+        console.error('Error loading data for AllProducts:', error);
       } finally {
         setIsLoading(false);
       }
     }
 
-    loadProducts();
+    loadData();
   }, []);
 
-  const filteredProducts = selectedCategory === 'all' 
-    ? products 
+  const filteredProducts = selectedCategory === 'all'
+    ? products
     : products.filter(product => product.category === selectedCategory);
 
-  const categories = [
-    { id: 'all' as const, label: 'Todos' },
-    { id: 'cuadros' as const, label: 'Cuadros' },
-    { id: 'alfombras' as const, label: 'Alfombras' },
-  ];
+  const displayCategories = categories.length > 1
+    ? [{ id: 'all', slug: 'all', label: 'Todos' }, ...categories]
+    : categories;
 
   if (isLoading) {
     return <ProductGridSkeleton />;
@@ -52,17 +58,17 @@ export function AllProducts() {
 
         {/* Filtros por Categoría */}
         <div className="mb-12 flex flex-wrap justify-center gap-4">
-          {categories.map((category) => (
+          {displayCategories.map((category) => (
             <button
-              key={category.id}
-              onClick={() => setSelectedCategory(category.id)}
+              key={category.slug}
+              onClick={() => setSelectedCategory(category.slug)}
               className="px-6 py-3 transition-all duration-300 border-2"
               style={{
                 fontFamily: 'Inter, sans-serif',
                 fontWeight: 500,
-                backgroundColor: selectedCategory === category.id ? '#2D5F4C' : 'transparent',
-                color: selectedCategory === category.id ? '#FFFFFF' : '#2C2C2C',
-                borderColor: selectedCategory === category.id ? '#2D5F4C' : '#E5E5E5',
+                backgroundColor: selectedCategory === category.slug ? '#2D5F4C' : 'transparent',
+                color: selectedCategory === category.slug ? '#FFFFFF' : '#2C2C2C',
+                borderColor: selectedCategory === category.slug ? '#2D5F4C' : '#E5E5E5',
               }}
             >
               {category.label}
@@ -78,8 +84,8 @@ export function AllProducts() {
               image={product.image}
               title={product.title}
               price={product.price}
-              onMercadoLibreClick={() => handleMercadoLibreClick(product.id)}
-              onWhatsAppClick={() => handleWhatsAppClick(product.id)}
+              onMercadoLibreClick={() => handleMercadoLibreClick(product.id, product.url_producto_en_tienda)}
+              onWhatsAppClick={() => handleWhatsAppClick(product.id, cmsData.whatsapp)}
               soldOut={product.soldOut}
             />
           ))}
