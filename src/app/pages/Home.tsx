@@ -4,12 +4,14 @@ import { Hero } from '../components/Hero';
 import { ProductCard } from '../components/ProductCard';
 import { TrustBar } from '../components/TrustBar';
 import { HeroSkeleton, ProductGridSkeleton } from '../components/SkeletonLoader';
-import { allProducts, handleMercadoLibreClick, handleWhatsAppClick } from '../data/products';
+import { handleMercadoLibreClick, handleWhatsAppClick, Product } from '../data/products';
+import { fetchProducts } from '../services/api';
 import { ArrowRight } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 export function Home() {
   const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState<Product[]>([]);
   const navigate = useNavigate();
 
   // 1. Recibimos el context del Root
@@ -29,12 +31,18 @@ export function Home() {
   const heroBtnText = cmsData?.hero_texto_boton || "Ver Colección";
 
   useEffect(() => {
-    // Simular carga de datos desde CMS
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    async function loadProducts() {
+      try {
+        const fetchedProducts = await fetchProducts();
+        setProducts(fetchedProducts);
+      } catch (error) {
+        console.error('Error loading products for Home:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
 
-    return () => clearTimeout(timer);
+    loadProducts();
   }, []);
 
   const scrollToSection = (sectionId: string) => {
@@ -42,7 +50,7 @@ export function Home() {
   };
 
   // Mostrar solo los primeros 6 productos en la home
-  const featuredProducts = allProducts.slice(0, 6);
+  const featuredProducts = products.slice(0, 6);
 
   return (
     <>

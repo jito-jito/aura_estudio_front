@@ -1,24 +1,32 @@
 import { useState, useEffect } from 'react';
 import { ProductCard } from '../components/ProductCard';
 import { ProductGridSkeleton } from '../components/SkeletonLoader';
-import { allProducts, handleMercadoLibreClick, handleWhatsAppClick, ProductCategory } from '../data/products';
+import { handleMercadoLibreClick, handleWhatsAppClick, ProductCategory, Product } from '../data/products';
+import { fetchProducts } from '../services/api';
 
 export function AllProducts() {
   const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'all'>('all');
 
   useEffect(() => {
-    // Simular carga de datos desde CMS
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
+    async function loadProducts() {
+      try {
+        const fetchedProducts = await fetchProducts();
+        setProducts(fetchedProducts);
+      } catch (error) {
+        console.error('Error loading products for AllProducts:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
 
-    return () => clearTimeout(timer);
+    loadProducts();
   }, []);
 
   const filteredProducts = selectedCategory === 'all' 
-    ? allProducts 
-    : allProducts.filter(product => product.category === selectedCategory);
+    ? products 
+    : products.filter(product => product.category === selectedCategory);
 
   const categories = [
     { id: 'all' as const, label: 'Todos' },
