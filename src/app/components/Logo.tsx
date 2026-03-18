@@ -64,7 +64,7 @@ export function Logo({ className = "", isDark = false }: LogoProps) {
     //   <circle cx="36" cy="24" r="1.5" fill={accentColor} opacity="0.6" />
     // </svg>
     <img
-      src="/assets/app_logo.jpeg" alt="Aura Estudio Logo" className={className}
+      src="/assets/app_logo.png" alt="Aura Estudio Logo" className={className}
       style={{
         width: '30px',
         height: '30px'
