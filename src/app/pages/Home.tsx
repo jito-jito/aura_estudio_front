@@ -1,24 +1,20 @@
-import { useState, useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router';
 import { Hero } from '../components/Hero';
 import { ProductCard } from '../components/ProductCard';
 import { TrustBar } from '../components/TrustBar';
 import { HeroSkeleton, ProductGridSkeleton } from '../components/SkeletonLoader';
-import { handleMercadoLibreClick, handleWhatsAppClick, Product } from '../data/products';
-import { fetchProducts } from '../services/api';
+import { handleMercadoLibreClick, handleWhatsAppClick } from '../data/products';
 import { ArrowRight } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 export function Home() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [products, setProducts] = useState<Product[]>([]);
   const navigate = useNavigate();
 
   // 1. Recibimos el context del Root
   const { cmsData } = useOutletContext<{ cmsData: any }>();
 
   // 2. Manejo de loading basado en si existe data
-  // const isLoading = !cmsData;
+  const isLoading = !cmsData;
 
 
   // Mapeo de datos del CMS (Strapi)
@@ -30,27 +26,21 @@ export function Home() {
   const heroImage = cmsData?.hero_imagen?.url || "https://images.unsplash.com/..."; // URL por defecto
   const heroBtnText = cmsData?.hero_texto_boton || "Ver Colección";
 
-  useEffect(() => {
-    async function loadProducts() {
-      try {
-        const fetchedProducts = await fetchProducts();
-        setProducts(fetchedProducts);
-      } catch (error) {
-        console.error('Error loading products for Home:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    loadProducts();
-  }, []);
-
   const scrollToSection = (sectionId: string) => {
     document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   // Mostrar solo los primeros 6 productos en la home
-  const featuredProducts = products.slice(0, 6);
+  const rawFeaturedProducts = cmsData?.productos_destacados || [];
+  
+  const featuredProducts = rawFeaturedProducts.map((item: any) => ({
+    id: item.documentId,
+    title: item.nombre,
+    price: '$' + item.precio?.toLocaleString('es-AR'),
+    image: item.imagenes?.[0]?.url || item.url_producto_en_tienda || '',
+    soldOut: item.agotado === true || item.stock === 0,
+    url_producto_en_tienda: item.url_producto_en_tienda,
+  })).slice(0, 6);
 
   return (
     <>
@@ -84,7 +74,7 @@ export function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredProducts.map((product) => (
+              {featuredProducts.map((product: any) => (
                 <ProductCard
                   key={product.id}
                   image={product.image}
