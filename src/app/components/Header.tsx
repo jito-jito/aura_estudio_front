@@ -57,6 +57,13 @@ export function Header({ name }: HeaderProps) {
             >
               Productos
             </Link>
+            <Link
+              to="/preventa"
+              className="app-link transition-colors hover:text-[#2D5F4C]"
+              style={{ color: '#2C2C2C' }}
+            >
+              Preventa
+            </Link>
             <button
               onClick={() => scrollToSection('social')}
               className="transition-colors hover:text-[#2D5F4C]"
@@ -87,6 +94,14 @@ export function Header({ name }: HeaderProps) {
               style={{ color: '#2C2C2C' }}
             >
               Productos
+            </Link>
+            <Link
+              to="/preventa"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="transition-colors hover:text-[#2D5F4C]"
+              style={{ color: '#2C2C2C' }}
+            >
+              Preventa
             </Link>
             <button
               onClick={() => {

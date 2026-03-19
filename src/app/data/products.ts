@@ -3,6 +3,7 @@ export type ProductCategory = 'cuadros' | 'alfombras';
 export interface Product {
   id: string;
   image: string;
+  images?: string[];
   title: string;
   price: string;
   soldOut?: boolean;

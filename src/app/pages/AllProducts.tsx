@@ -82,11 +82,13 @@ export function AllProducts() {
             <ProductCard
               key={product.id}
               image={product.image}
+              images={product.images}
               title={product.title}
               price={product.price}
               onMercadoLibreClick={() => handleMercadoLibreClick(product.id, product.url_producto_en_tienda)}
               onWhatsAppClick={() => handleWhatsAppClick(product.id, cmsData.whatsapp)}
               soldOut={product.soldOut}
+              productUrl={product.url_producto_en_tienda}
             />
           ))}
         </div>

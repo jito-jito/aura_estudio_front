@@ -37,6 +37,7 @@ export function Home() {
     id: item.documentId,
     title: item.nombre,
     price: '$' + item.precio?.toLocaleString('es-AR'),
+    images: item.imagenes?.map((img: any) => img.url) || [],
     image: item.imagenes?.[0]?.url || item.url_producto_en_tienda || '',
     soldOut: item.agotado === true || item.stock === 0,
     url_producto_en_tienda: item.url_producto_en_tienda,
@@ -78,11 +79,13 @@ export function Home() {
                 <ProductCard
                   key={product.id}
                   image={product.image}
+                  images={product.images}
                   title={product.title}
                   price={product.price}
                   onMercadoLibreClick={() => handleMercadoLibreClick(product.id, product.url_producto_en_tienda)}
                   onWhatsAppClick={() => handleWhatsAppClick(product.id, cmsData.whatsapp)}
                   soldOut={product.soldOut}
+                  productUrl={product.url_producto_en_tienda}
                 />
               ))}
             </div>

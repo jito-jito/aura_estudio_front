@@ -52,7 +52,8 @@ export async function fetchProducts(): Promise<Product[]> {
         id: item.documentId,
         title: item.nombre,
         price: formattedPrice,
-        image: item.imagenes && item.imagenes.length > 0 ? item.imagenes[0].url : '',
+        image: item.imagenes && item.imagenes.length > 0 ? item.imagenes[0].url : item.url_producto_en_tienda || '',
+        images: item.imagenes ? item.imagenes.map(img => img.url) : [],
         category: (item.categoria?.slug || 'cuadros') as ProductCategory,
         soldOut: item.agotado === true || item.stock === 0,
         url_producto_en_tienda: item.url_producto_en_tienda,
@@ -96,6 +97,69 @@ export async function fetchCategories(): Promise<Category[]> {
   } catch (error) {
     console.error('Failed to fetch categories:', error);
     return [];
+  }
+}
+
+interface PresaleData {
+  products: Product[];
+  contactButtonText: string;
+  contactNumber: string;
+  shippingTime: string;
+}
+
+interface StrapiPresaleResponse {
+  data: {
+    id: number;
+    documentId: string;
+    texto_boton_contacto: string;
+    numero_de_contacto: string;
+    texto_tiempo_de_despacho: string;
+    productos: StrapiProduct[];
+  };
+}
+
+export async function fetchPresaleProducts(): Promise<PresaleData> {
+  try {
+    const response = await fetch(`${API_URL}/productos-en-preventa?populate[productos][populate]=*`, {
+      headers: {
+        Authorization: `Bearer ${API_TOKEN}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error fetching presale products: ${response.statusText}`);
+    }
+
+    const json: StrapiPresaleResponse = await response.json();
+    const data = json.data;
+
+    if (!data) return { products: [], contactButtonText: 'Contactanos', contactNumber: '+56935805401', shippingTime: '' };
+
+    const products = data.productos ? data.productos.map((item) => {
+      // Format price to something like "$54.990"
+      const formattedPrice = '$' + item.precio.toLocaleString('es-AR');
+      
+      return {
+        id: item.documentId,
+        title: item.nombre,
+        price: formattedPrice,
+        image: item.imagenes && item.imagenes.length > 0 ? item.imagenes[0].url : item.url_producto_en_tienda || '',
+        images: item.imagenes ? item.imagenes.map(img => img.url) : [],
+        category: (item.categoria?.slug || 'cuadros') as ProductCategory,
+        soldOut: item.agotado === true || item.stock === 0,
+        url_producto_en_tienda: item.url_producto_en_tienda,
+      };
+    }) : [];
+
+    return {
+      products,
+      contactButtonText: data.texto_boton_contacto || 'Contactanos',
+      contactNumber: data.numero_de_contacto || '+56935805401',
+      shippingTime: data.texto_tiempo_de_despacho || '',
+    };
+  } catch (error) {
+    console.error('Failed to fetch presale products:', error);
+    return { products: [], contactButtonText: 'Contactanos', contactNumber: '+56935805401', shippingTime: '' };
   }
 }
 
