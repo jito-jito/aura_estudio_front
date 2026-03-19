@@ -24,7 +24,7 @@ export function Root() {
         const token = (import.meta as any).env.VITE_API_TOKEN;
         const baseUrl = (import.meta as any).env.VITE_API_URL;
 
-        const response = await fetch(`${baseUrl}/aura-estudio-landing?populate=*`, {
+        const response = await fetch(`${baseUrl}/aura-estudio-landing?populate[hero_imagen]=true&populate[productos_destacados][populate]=*`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

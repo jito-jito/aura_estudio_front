@@ -131,9 +131,10 @@ export const handleMercadoLibreClick = (productId: string, url_producto_en_tiend
   }
 };
 
-export const handleWhatsAppClick = (productId: string, phoneNumber: string) => {
-  console.log('WhatsApp click for product:', productId, phoneNumber);
+export const handleWhatsAppClick = (productName: string, phoneNumber: string) => {
+  console.log('WhatsApp click for product:', productName, phoneNumber);
   // In a real app, this would open WhatsApp with a pre-filled message
   // open whatsapp link
-  window.open(`https://wa.me/${phoneNumber}?text=Hola,%20estoy%20interesado%20en%20el%20producto:%20${productId}`, '_blank');
+  const message = `Hola, estoy interesado en el producto: ${productName}`;
+  window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
 };

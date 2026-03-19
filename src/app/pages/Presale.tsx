@@ -6,9 +6,9 @@ import { handleMercadoLibreClick, Product } from '../data/products';
 import { fetchPresaleProducts } from '../services/api';
 
 // Custom WhatsApp handler for presale products
-const handleWhatsAppClickPresale = (productId: string, phoneNumber: string) => {
-  console.log('WhatsApp click for presale product:', productId, phoneNumber);
-  const presaleMessage = `Hola, estoy interesado en el producto en preventa: ${productId}`;
+const handleWhatsAppClickPresale = (productName: string, phoneNumber: string) => {
+  console.log('WhatsApp click for presale product:', productName, phoneNumber);
+  const presaleMessage = `Hola, estoy interesado en el producto en preventa: ${productName}`;
   window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(presaleMessage)}`, '_blank');
 };
 
@@ -70,7 +70,7 @@ export function Presale() {
                 title={product.title}
                 price={product.price}
                 onMercadoLibreClick={() => handleMercadoLibreClick(product.id, product.url_producto_en_tienda)}
-                onWhatsAppClick={() => handleWhatsAppClickPresale(product.id, contactNumber)}
+                onWhatsAppClick={() => handleWhatsAppClickPresale(product.title, contactNumber)}
                 soldOut={product.soldOut}
                 customButtonText={contactButtonText}
                 hideMercadoLibreButton={true}
