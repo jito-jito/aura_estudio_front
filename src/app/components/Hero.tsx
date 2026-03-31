@@ -42,7 +42,7 @@ export function Hero({ image, title, subtitle, ctaText, onCtaClick, content }: H
           </ReactMarkdown>
           <button
             onClick={onCtaClick}
-            className="px-10 py-4 text-lg transition-all duration-300 hover:scale-105"
+            className="px-10 py-4 text-lg transition-all duration-300 hover:scale-105 cursor-pointer transform active:scale-95 hover:shadow-xl"
             style={{
               fontFamily: 'Inter, sans-serif',
               fontWeight: 500,

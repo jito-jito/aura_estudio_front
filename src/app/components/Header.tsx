@@ -45,7 +45,7 @@ export function Header({ name }: HeaderProps) {
 
           {/* Hamburger Menu Toggle (Mobile Only) */}
           <button
-            className="hidden max-[480px]:block absolute top-1/2 right-0 -translate-y-1/2 p-2"
+            className="hidden max-[480px]:block absolute top-1/2 right-0 -translate-y-1/2 p-2 cursor-pointer transform hover:scale-110 active:scale-95 transition-transform duration-200"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -56,28 +56,28 @@ export function Header({ name }: HeaderProps) {
           <nav className="flex gap-4 md:gap-8 max-[480px]:hidden" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 500, fontSize: '14px' }}>
             <Link
               to="/productos"
-              className="app-link transition-colors hover:text-[#2D5F4C]"
+              className="app-link transition-colors hover:text-[#2D5F4C] cursor-pointer transform hover:scale-105 active:scale-95 transition-all duration-200"
               style={{ color: '#2C2C2C' }}
             >
               Productos
             </Link>
             <Link
               to="/preventa"
-              className="app-link transition-colors hover:text-[#2D5F4C]"
+              className="app-link transition-colors hover:text-[#2D5F4C] cursor-pointer transform hover:scale-105 active:scale-95 transition-all duration-200"
               style={{ color: '#2C2C2C' }}
             >
               Preventa
             </Link>
             <button
               onClick={() => scrollToSection('social')}
-              className="transition-colors hover:text-[#2D5F4C]"
+              className="transition-colors hover:text-[#2D5F4C] cursor-pointer transform hover:scale-105 active:scale-95 transition-all duration-200"
               style={{ color: '#2C2C2C' }}
             >
               Redes
             </button>
             <button
               onClick={() => scrollToSection('footer')}
-              className="transition-colors hover:text-[#2D5F4C]"
+              className="transition-colors hover:text-[#2D5F4C] cursor-pointer transform hover:scale-105 active:scale-95 transition-all duration-200"
               style={{ color: '#2C2C2C' }}
             >
               Contacto
@@ -94,7 +94,7 @@ export function Header({ name }: HeaderProps) {
             <Link
               to="/productos"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="transition-colors hover:text-[#2D5F4C]"
+              className="transition-colors hover:text-[#2D5F4C] cursor-pointer transform hover:scale-105 active:scale-95 transition-all duration-200"
               style={{ color: '#2C2C2C' }}
             >
               Productos
@@ -102,7 +102,7 @@ export function Header({ name }: HeaderProps) {
             <Link
               to="/preventa"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="transition-colors hover:text-[#2D5F4C]"
+              className="transition-colors hover:text-[#2D5F4C] cursor-pointer transform hover:scale-105 active:scale-95 transition-all duration-200"
               style={{ color: '#2C2C2C' }}
             >
               Preventa
@@ -112,7 +112,7 @@ export function Header({ name }: HeaderProps) {
                 setIsMobileMenuOpen(false);
                 scrollToSection('social');
               }}
-              className="transition-colors hover:text-[#2D5F4C]"
+              className="transition-colors hover:text-[#2D5F4C] cursor-pointer transform hover:scale-105 active:scale-95 transition-all duration-200"
               style={{ color: '#2C2C2C' }}
             >
               Redes
@@ -122,7 +122,7 @@ export function Header({ name }: HeaderProps) {
                 setIsMobileMenuOpen(false);
                 scrollToSection('footer');
               }}
-              className="transition-colors hover:text-[#2D5F4C]"
+              className="transition-colors hover:text-[#2D5F4C] cursor-pointer transform hover:scale-105 active:scale-95 transition-all duration-200"
               style={{ color: '#2C2C2C' }}
             >
               Contacto

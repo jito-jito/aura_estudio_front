@@ -155,7 +155,7 @@ export function ProductCard({ image, images, title, price, stock, soldOut = fals
                   e.stopPropagation();
                   handleImageChange(index);
                 }}
-                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 border border-white/50 ${
+                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 border border-white/50 cursor-pointer transform hover:scale-125 ${
                   index === activeImageIndex 
                     ? 'bg-white scale-110 shadow-lg' 
                     : 'bg-white/50 hover:bg-white/80 hover:scale-105'
@@ -248,7 +248,7 @@ export function ProductCard({ image, images, title, price, stock, soldOut = fals
           
           <button
             onClick={onWhatsAppClick}
-            className="w-full px-6 py-3 flex items-center justify-center gap-2 transition-all duration-300 hover:bg-neutral-50"
+            className="w-full px-6 py-3 flex items-center justify-center gap-2 transition-all duration-300 hover:bg-neutral-50 cursor-pointer transform hover:scale-[1.01] active:scale-[0.99]"
             style={{
               fontFamily: 'Inter, sans-serif',
               fontWeight: 500,

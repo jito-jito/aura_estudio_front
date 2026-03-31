@@ -96,7 +96,7 @@ export function Home() {
             <div className="mt-16 text-center">
               <button
                 onClick={() => navigate('/productos')}
-                className="inline-flex items-center gap-3 px-8 py-4 text-white transition-all duration-300 hover:opacity-90 group"
+                className="inline-flex items-center gap-3 px-8 py-4 text-white transition-all duration-300 hover:opacity-90 group cursor-pointer transform hover:scale-105 active:scale-95 hover:shadow-xl"
                 style={{
                   backgroundColor: '#2D5F4C',
                   fontFamily: 'Inter, sans-serif',
