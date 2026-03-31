@@ -41,6 +41,7 @@ export function Home() {
     image: item.imagenes?.[0]?.url || item.url_producto_en_tienda || '',
     soldOut: item.agotado === true || item.stock === 0,
     url_producto_en_tienda: item.url_producto_en_tienda,
+    frameTypes: ['blanco', 'negro', 'madera'], // Hardcoded for now
   })).slice(0, 6);
 
   return (
@@ -86,6 +87,7 @@ export function Home() {
                   onWhatsAppClick={() => handleWhatsAppClick(product.title, cmsData.whatsapp)}
                   soldOut={product.soldOut}
                   productUrl={product.url_producto_en_tienda}
+                  frameTypes={product.frameTypes}
                 />
               ))}
             </div>

@@ -7,6 +7,20 @@ export interface Category {
   label: string; // nombre
 }
 
+export interface PaginationMeta {
+  page: number;
+  pageSize: number;
+  pageCount: number;
+  total: number;
+}
+
+export interface ProductsResponse {
+  products: Product[];
+  meta: {
+    pagination: PaginationMeta;
+  };
+}
+
 const API_URL = import.meta.env.VITE_API_URL;
 const API_TOKEN = import.meta.env.VITE_API_TOKEN;
 
@@ -27,9 +41,15 @@ interface StrapiProduct {
   url_producto_en_tienda?: string;
 }
 
-export async function fetchProducts(): Promise<Product[]> {
+export async function fetchProducts(page: number = 1, pageSize: number = 9, category?: string): Promise<ProductsResponse> {
   try {
-    const response = await fetch(`${API_URL}/productos?populate=*`, {
+    let url = `${API_URL}/productos?populate=*&pagination[page]=${page}&pagination[pageSize]=${pageSize}`;
+    
+    if (category && category !== 'all') {
+      url += `&filters[categoria][slug][$eq]=${category}`;
+    }
+
+    const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
       },
@@ -41,10 +61,11 @@ export async function fetchProducts(): Promise<Product[]> {
 
     const json = await response.json();
     const data: StrapiProduct[] = json.data;
+    const meta = json.meta;
 
-    if (!data) return [];
+    if (!data) return { products: [], meta: { pagination: { page: 1, pageSize, pageCount: 0, total: 0 } } };
 
-    return data.map((item) => {
+    const products = data.map((item) => {
       // Format price to something like "$54.990"
       const formattedPrice = '$' + item.precio.toLocaleString('es-AR');
       
@@ -57,11 +78,17 @@ export async function fetchProducts(): Promise<Product[]> {
         category: (item.categoria?.slug || 'cuadros') as ProductCategory,
         soldOut: item.agotado === true || item.stock === 0,
         url_producto_en_tienda: item.url_producto_en_tienda,
+        frameTypes: ['blanco', 'negro', 'madera'], // Hardcoded for now
       };
     });
+
+    return {
+      products,
+      meta
+    };
   } catch (error) {
     console.error('Failed to fetch products:', error);
-    return [];
+    return { products: [], meta: { pagination: { page: 1, pageSize, pageCount: 0, total: 0 } } };
   }
 }
 
@@ -148,6 +175,7 @@ export async function fetchPresaleProducts(): Promise<PresaleData> {
         category: (item.categoria?.slug || 'cuadros') as ProductCategory,
         soldOut: item.agotado === true || item.stock === 0,
         url_producto_en_tienda: item.url_producto_en_tienda,
+        frameTypes: ['blanco', 'negro', 'madera'], // Hardcoded for now
       };
     }) : [];
 

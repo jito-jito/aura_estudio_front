@@ -14,13 +14,17 @@ export function Header({ name }: HeaderProps) {
   const location = useLocation();
 
   const scrollToSection = (sectionId: string) => {
-    if (location.pathname !== '/') {
+    const sectionExists = document.getElementById(sectionId);
+    
+    if (sectionExists) {
+      // Si la sección existe en la página actual, hace scroll
+      sectionExists.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // Si no existe, navega al home y luego hace scroll
       navigate('/');
       setTimeout(() => {
         document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
-    } else {
-      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 

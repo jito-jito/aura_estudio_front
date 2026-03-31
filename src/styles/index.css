@@ -24,3 +24,22 @@
         font-size: 48px;
     }
 }
+
+.product-img {
+    object-fit: contain;
+    position: relative;
+    z-index: 2;
+}
+
+.product-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(40px);
+    opacity: 0.9;
+    z-index: 1;
+}

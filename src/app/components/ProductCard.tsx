@@ -14,9 +14,10 @@ interface ProductCardProps {
   hideMercadoLibreButton?: boolean;
   shippingTime?: string;
   productUrl?: string;
+  frameTypes?: string[];
 }
 
-export function ProductCard({ image, images, title, price, stock, soldOut = false, onMercadoLibreClick, onWhatsAppClick, customButtonText, hideMercadoLibreButton = false, shippingTime, productUrl }: ProductCardProps) {
+export function ProductCard({ image, images, title, price, stock, soldOut = false, onMercadoLibreClick, onWhatsAppClick, customButtonText, hideMercadoLibreButton = false, shippingTime, productUrl, frameTypes }: ProductCardProps) {
   // Usar el array de images si está disponible, sino usar solo la imagen principal
   const allImages = images && images.length > 0 ? images : [image];
   const hasMultipleImages = allImages.length > 1;
@@ -85,6 +86,24 @@ export function ProductCard({ image, images, title, price, stock, soldOut = fals
     setTouchCurrent(0);
   };
 
+  const getFrameColor = (frameType: string) => {
+    const colors: { [key: string]: string } = {
+      'blanco': '#FFFFFF',
+      'negro': '#000000',
+      'madera': '#D2B48C'
+    };
+    return colors[frameType.toLowerCase()] || '#CCCCCC';
+  };
+
+  const getFrameName = (frameType: string) => {
+    const names: { [key: string]: string } = {
+      'blanco': 'Blanco',
+      'negro': 'Negro',
+      'madera': 'Madera'
+    };
+    return names[frameType.toLowerCase()] || frameType;
+  };
+
   return (
     <div className="group relative bg-white overflow-hidden transition-all duration-300 hover:shadow-2xl flex flex-col h-full">
       <div 
@@ -104,15 +123,22 @@ export function ProductCard({ image, images, title, price, stock, soldOut = fals
           {allImages.map((imageUrl, index) => (
             <div
               key={index}
-              className="flex-shrink-0 h-full"
+              className="flex-shrink-0 h-full relative"
               style={{ 
                 width: `${100 / allImages.length}%`
               }}
             >
+              {/* Fondo difuminado de la imagen */}
+              <div 
+                className="product-background"
+                style={{
+                  backgroundImage: `url(${imageUrl})`
+                }}
+              />
               <img
                 src={imageUrl}
                 alt={`${title} ${index === 0 ? '' : `vista ${index + 1}`}`}
-                className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+                className="product-img w-full h-full transition-all duration-500 group-hover:scale-105"
                 draggable={false}
               />
             </div>
@@ -169,6 +195,35 @@ export function ProductCard({ image, images, title, price, stock, soldOut = fals
             <p className="text-sm text-center text-neutral-600" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
               {shippingTime}
             </p>
+          </div>
+        )}
+        
+        {/* Marcos disponibles */}
+        {frameTypes && frameTypes.length > 0 && (
+          <div className="mb-6">
+            <p className="text-sm mb-3 text-neutral-600" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>
+              Marcos disponibles:
+            </p>
+            <div className="flex gap-3 items-center">
+              {frameTypes.map((frameType, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <div 
+                    className="w-5 h-5 rounded-full border-2"
+                    style={{
+                      backgroundColor: getFrameColor(frameType),
+                      borderColor: frameType.toLowerCase() === 'blanco' ? '#E5E5E5' : 'transparent',
+                    }}
+                  />
+                  <span 
+                    className="text-sm text-neutral-600"
+                    style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
+                  >
+                    {getFrameName(frameType)}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <hr className="mt-4 border-neutral-200" />
           </div>
         )}
         

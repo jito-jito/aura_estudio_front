@@ -9,6 +9,7 @@ export interface Product {
   soldOut?: boolean;
   category: ProductCategory;
   url_producto_en_tienda?: string;
+  frameTypes?: string[];
 }
 
 export const allProducts: Product[] = [

@@ -76,6 +76,7 @@ export function Presale() {
                 hideMercadoLibreButton={true}
                 shippingTime={shippingTime}
                 productUrl={product.url_producto_en_tienda}
+                frameTypes={product.frameTypes}
               />
             </div>
           ))}
