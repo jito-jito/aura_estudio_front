@@ -6,6 +6,7 @@ import { HeroSkeleton, ProductGridSkeleton } from '../components/SkeletonLoader'
 import { handleMercadoLibreClick, handleWhatsAppClick } from '../data/products';
 import { ArrowRight } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { SEO } from '../components/SEO';
 
 export function Home() {
   const navigate = useNavigate();
@@ -46,6 +47,10 @@ export function Home() {
 
   return (
     <>
+      <SEO 
+        title="Aura Estudio | Arte y Decoración para tu Hogar"
+        description="Descubre arte único y decoración para tu hogar en Aura Estudio. Cuadros, láminas y diseños exclusivos con envíos a todo Chile."
+      />
       {/* Hero Section */}
       {isLoading ? (
         <HeroSkeleton />

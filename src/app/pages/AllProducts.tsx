@@ -4,6 +4,7 @@ import { ProductCard } from '../components/ProductCard';
 import { ProductGridSkeleton } from '../components/SkeletonLoader';
 import { handleMercadoLibreClick, handleWhatsAppClick, Product } from '../data/products';
 import { fetchProducts, fetchCategories, Category, PaginationMeta } from '../services/api';
+import { SEO } from '../components/SEO';
 
 export function AllProducts() {
   const { cmsData } = useOutletContext<{ cmsData: any }>();
@@ -15,8 +16,7 @@ export function AllProducts() {
   const [paginationMeta, setPaginationMeta] = useState<PaginationMeta | null>(null);
   const [loadingProducts, setLoadingProducts] = useState(false);
 
-  console.log('cms data', cmsData)
-  
+
   // Cargar categorías una sola vez
   useEffect(() => {
     async function loadCategories() {
@@ -69,7 +69,15 @@ export function AllProducts() {
     : categories;
 
   if (isLoading) {
-    return <ProductGridSkeleton />;
+    return (
+      <>
+        <SEO
+          title="Catálogo de Cuadros y Arte | Aura Estudio"
+          description="Explora nuestra colección completa de cuadros decorativos, arte moderno y láminas exclusivas para transformar tus espacios."
+        />
+        <ProductGridSkeleton />
+      </>
+    );
   }
 
   const renderPagination = () => {
@@ -77,12 +85,12 @@ export function AllProducts() {
 
     const { page, pageCount } = paginationMeta;
     const pages = [];
-    
+
     // Show max 5 page numbers
     const maxVisible = 5;
     let startPage = Math.max(1, page - Math.floor(maxVisible / 2));
     let endPage = Math.min(pageCount, startPage + maxVisible - 1);
-    
+
     if (endPage - startPage + 1 < maxVisible) {
       startPage = Math.max(1, endPage - maxVisible + 1);
     }
@@ -108,7 +116,7 @@ export function AllProducts() {
         >
           ←
         </button>
-        
+
         {/* Page numbers */}
         {pages.map((pageNumber) => (
           <button
@@ -126,7 +134,7 @@ export function AllProducts() {
             {pageNumber}
           </button>
         ))}
-        
+
         {/* Next button */}
         <button
           onClick={() => handlePageChange(page + 1)}
@@ -147,7 +155,12 @@ export function AllProducts() {
   };
 
   return (
-    <section className="py-24 bg-white">
+    <>
+      <SEO
+        title="Catálogo de Cuadros y Arte | Aura Estudio"
+        description="Explora nuestra colección completa de cuadros decorativos, arte moderno y láminas exclusivas para transformar tus espacios."
+      />
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-12">
             <h1 className="text-5xl mb-4" style={{ fontFamily: 'Playfair Display, serif', color: '#2C2C2C' }}>
@@ -229,5 +242,6 @@ export function AllProducts() {
           )}
         </div>
       </section>
+    </>
   );
 }

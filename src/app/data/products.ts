@@ -122,18 +122,15 @@ export const allProducts: Product[] = [
 ];
 
 export const handleMercadoLibreClick = (productId: string, url_producto_en_tienda?: string) => {
-  console.log('Mercado Libre click for product:', productId, url_producto_en_tienda);
 
   if (url_producto_en_tienda) {
     window.open(url_producto_en_tienda, '_blank');
   } else {
     // Fallback if no URL
-    console.log('No URL provided for Mercado Libre');
   }
 };
 
 export const handleWhatsAppClick = (productName: string, phoneNumber: string) => {
-  console.log('WhatsApp click for product:', productName, phoneNumber);
   // In a real app, this would open WhatsApp with a pre-filled message
   // open whatsapp link
   const message = `Hola, estoy interesado en el producto: ${productName}`;
